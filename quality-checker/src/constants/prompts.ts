@@ -2,21 +2,21 @@ import { FeedbackSize } from "@/types";
 
 export const REVIEW_TEMPLATES: Record<FeedbackSize, string> = {
   concise: `
-    Brief code review (300 tokens) - do not write this text in the form
-    Score: [0-100]/100
+    Brief code review - do not write this text in the form
+    Quality Score: [0-100] - mandatory field, should look like "Quality Score: 70"
     Strengths: 2-3 key points
     Issues: 2-3 main concerns
   `,
   detailed: `
-    Detailed code review (500 tokens) - do not write this text in the form
-    Quality Score: [0-100]/100
+    Detailed code review - do not write this text in the form
+    Quality Score: [0-100] - mandatory field, should look like "Quality Score: 70"
     Key Strengths (3-4 points):
     Areas for Improvement (3-4 points):
     Code Structure Analysis:
   `,
   comprehensive: `
-    Comprehensive code review (1000 tokens) - do not write this text in the form
-    Overall Quality Score: [0-100]/100
+    Comprehensive code review - do not write this text in the form
+    Quality Score: [0-100] - mandatory field, should look like "Quality Score: 70"
     
     Detailed Strengths Analysis:
     - Code Organization
@@ -52,9 +52,9 @@ export const COMMIT_TEMPLATES: Record<FeedbackSize, string> = {
     {changes}
  
     Provide:
-    1. Quality Score (0-100)
-    2. Key Changes Summary
-    3. Main Impact Points
+    Quality Score (0-100) - mandatory field, should look like "Quality Score: 70"
+    1. Key Changes Summary
+    2. Main Impact Points
     `,
 
   detailed: `
@@ -67,11 +67,11 @@ export const COMMIT_TEMPLATES: Record<FeedbackSize, string> = {
     {changes}
 
     Provide:
-    1. Commit Quality Score (0-100)
-    2. Summary of Changes
-    3. Impact Analysis
-    4. Best Practices Review
-    5. Suggestions
+    Quality Score (0-100) - mandatory field, should look like "Quality Score: 70"
+    1. Summary of Changes
+    2. Impact Analysis
+    3. Best Practices Review
+    4. Suggestions
     `,
 
   comprehensive: `
@@ -84,13 +84,13 @@ export const COMMIT_TEMPLATES: Record<FeedbackSize, string> = {
     {changes}
 
     Provide comprehensive analysis:
-    1. Quality Score (0-100)
-    2. Commit Overview
-    3. Technical Analysis
-    4. Best Practices
-    5. Security Review
-    6. Impact Analysis
-    7. Recommendations
+    Quality Score (0-100) - mandatory field, should look like "Quality Score: 70"
+    1. Commit Overview
+    2. Technical Analysis
+    3. Best Practices
+    4. Security Review
+    5. Impact Analysis
+    6. Recommendations
     `,
 };
 

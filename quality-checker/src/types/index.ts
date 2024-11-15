@@ -13,3 +13,7 @@ export interface Change {
   changes: string;
   patch: string;
 }
+
+export type ScoreMeterProps = {
+  score: number;
+};

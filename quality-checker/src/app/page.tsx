@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, Github, Code2 } from "lucide-react";
+import { AlertCircle, Github, Code2, Copy, Check } from "lucide-react";
 import { AnimatedBackground } from "@/components/BackgroundAnimation";
 import { FormInput } from "@/components/FormInput";
 import { GitHubService } from "@/services/github";
@@ -9,15 +9,16 @@ import { FeedbackSize, AnalysisType } from "@/types";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const CodeReviewApp = () => {
-  const [repo, setRepo] = useLocalStorage('lastRepo', '');
-  const [sha, setSha] = useLocalStorage('lastSha', '');
+  const [repo, setRepo] = useLocalStorage("lastRepo", "");
+  const [sha, setSha] = useLocalStorage("lastSha", "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [feedbackSize, setFeedbackSize] = useState<FeedbackSize>("concise");
   const [progress, setProgress] = useState(0);
-  const [analysisType, setAnalysisType] = useState<AnalysisType>('file');
+  const [analysisType, setAnalysisType] = useState<AnalysisType>("file");
+  const [copied, setCopied] = useState(false);
 
   const feedbackOptions = [
     { value: "concise", label: "Quick Review" },
@@ -42,21 +43,22 @@ const CodeReviewApp = () => {
 
       const githubService = new GitHubService();
 
-      const analysis = analysisType === 'file'
-      ? await githubService.getFileContent(
-          owner,
-          repoName,
-          sha,
-          feedbackSize,
-          (progress: number) => setProgress(progress)
-        )
-        : await githubService.getCommitDetails(
-          owner,
-          repoName,
-          sha,
-          feedbackSize,
-          (progress: number) => setProgress(progress)
-        );
+      const analysis =
+        analysisType === "file"
+          ? await githubService.getFileContent(
+              owner,
+              repoName,
+              sha,
+              feedbackSize,
+              (progress: number) => setProgress(progress)
+            )
+          : await githubService.getCommitDetails(
+              owner,
+              repoName,
+              sha,
+              feedbackSize,
+              (progress: number) => setProgress(progress)
+            );
 
       setAnalysis(analysis);
       setTimeout(() => setShowAnalysis(true), 100);
@@ -64,6 +66,18 @@ const CodeReviewApp = () => {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCopy = async () => {
+    if (analysis) {
+      try {
+        await navigator.clipboard.writeText(analysis);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 3000);
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
     }
   };
 
@@ -85,21 +99,21 @@ const CodeReviewApp = () => {
 
           <div className="mb-6 flex rounded-lg overflow-hidden">
             <button
-              onClick={() => setAnalysisType('file')}
+              onClick={() => setAnalysisType("file")}
               className={`flex-1 py-2 px-4 ${
-                analysisType === 'file'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-800 text-gray-400'
+                analysisType === "file"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-800 text-gray-400"
               }`}
             >
               File Analysis
             </button>
             <button
-              onClick={() => setAnalysisType('commit')}
+              onClick={() => setAnalysisType("commit")}
               className={`flex-1 py-2 px-4 ${
-                analysisType === 'commit'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-800 text-gray-400'
+                analysisType === "commit"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-800 text-gray-400"
               }`}
             >
               Commit Analysis
@@ -181,9 +195,22 @@ const CodeReviewApp = () => {
 
           <div className="h-[400px] overflow-y-auto">
             {analysis ? (
-              <pre className="whitespace-pre-wrap font-mono text-sm text-gray-300">
-                {analysis}
-              </pre>
+              <>
+                <button
+                  onClick={handleCopy}
+                  className="absolute top-8 right-6 p-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-lg transition-colors"
+                  title="Copy to clipboard"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4 text-green-400" />
+                  ) : (
+                    <Copy className="w-4 h-4 text-gray-400" />
+                  )}
+                </button>
+                <pre className="whitespace-pre-wrap font-mono text-sm text-gray-300 pr-2">
+                  {analysis}
+                </pre>
+              </>
             ) : (
               <div className="flex items-center justify-center h-full text-gray-400">
                 No analysis results yet
