@@ -17,9 +17,9 @@ const CodeReviewApp = () => {
   const [feedbackSize, setFeedbackSize] = useState<FeedbackSize>("concise");
 
   const feedbackOptions = [
-    { value: "concise", label: "Quick Review (200 tokens)" },
-    { value: "detailed", label: "Detailed Analysis (500 tokens)" },
-    { value: "comprehensive", label: "Deep Dive (1000 tokens)" },
+    { value: "concise", label: "Quick Review" },
+    { value: "detailed", label: "Detailed Analysis" },
+    { value: "comprehensive", label: "Deep Dive" },
   ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
