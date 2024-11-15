@@ -14,6 +14,9 @@ export interface Change {
   patch: string;
 }
 
-export type ScoreMeterProps = {
-  score: number;
-};
+export interface GitHubFile {
+  filename: string;
+  additions: number;
+  deletions: number;
+  patch: string;
+}

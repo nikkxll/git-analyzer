@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, GenerativeModel } from "@google/generative-ai";
 import { FeedbackSize, CommitInfo } from "@/types";
 import {
   REVIEW_TEMPLATES,
@@ -8,7 +8,7 @@ import {
 
 export class CodeAnalysisService {
   private genAI: GoogleGenerativeAI;
-  private model: any;
+  private model: GenerativeModel;
 
   private formatResponse(text: string): string {
     return text
@@ -58,7 +58,7 @@ export class CodeAnalysisService {
 
       const response = await result.response;
       return this.formatResponse(response.text());
-    } catch (error) {
+    } catch {
       throw new Error("Unable to process response");
     }
   }
@@ -92,7 +92,7 @@ export class CodeAnalysisService {
 
       const response = await result.response;
       return this.formatResponse(response.text());
-    } catch (error) {
+    } catch {
       throw new Error("Unable to process response");
     }
   }

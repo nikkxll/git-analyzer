@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AlertCircle, Github, Code2, Copy, Check } from "lucide-react";
-import { AnimatedBackground } from "@/components/BackgroundAnimation";
+import { BackgroundAnimation } from "@/components/BackgroundAnimation";
 import { FormInput } from "@/components/FormInput";
 import { GitHubService } from "@/services/github";
 import { FeedbackSize, AnalysisType } from "@/types";
@@ -14,7 +14,6 @@ const CodeReviewApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<string | null>(null);
-  const [showAnalysis, setShowAnalysis] = useState(false);
   const [feedbackSize, setFeedbackSize] = useState<FeedbackSize>("concise");
   const [progress, setProgress] = useState(0);
   const [analysisType, setAnalysisType] = useState<AnalysisType>("file");
@@ -31,7 +30,6 @@ const CodeReviewApp = () => {
     setLoading(true);
     setError(null);
     setAnalysis(null);
-    setShowAnalysis(false);
     setProgress(0);
 
     try {
@@ -61,7 +59,6 @@ const CodeReviewApp = () => {
             );
 
       setAnalysis(analysis);
-      setTimeout(() => setShowAnalysis(true), 100);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -82,7 +79,7 @@ const CodeReviewApp = () => {
   };
 
   return (
-    <AnimatedBackground>
+    <BackgroundAnimation>
       <div className="flex items-center gap-8 w-full max-w-6xl mx-auto">
         <div className="w-full max-w-xl max-h-max bg-gray-900/70 border border-gray-700 rounded-xl p-8 relative z-10 backdrop-blur-md">
           <div className="mb-8">
@@ -92,8 +89,8 @@ const CodeReviewApp = () => {
                 Code Quality Review
               </h1>
             </div>
-            <p className="text-white text-base font-electrolize">
-              Enter a GitHub repository and file SHA to analyze code quality
+            <p className="text-white text-sm font-electrolize">
+              Enter a GitHub repository and file/commit SHA to analyze code quality
             </p>
           </div>
 
@@ -219,7 +216,7 @@ const CodeReviewApp = () => {
           </div>
         </div>
       </div>
-    </AnimatedBackground>
+    </BackgroundAnimation>
   );
 };
 

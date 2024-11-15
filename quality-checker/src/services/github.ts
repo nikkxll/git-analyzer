@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/core";
 import { CodeAnalysisService } from './llm';
-import { FeedbackSize, CommitInfo } from '@/types';
+import { FeedbackSize, CommitInfo, GitHubFile } from '@/types';
 
 export class GitHubService {
   private octokit: Octokit;
@@ -42,8 +42,8 @@ export class GitHubService {
 
       onProgress?.(95);
       return analysis;
-    } catch (error) {
-      throw new Error('Error fetching file content. Make sure the file is accessible.');
+    } catch {
+      throw new Error('Error fetching file content. Make sure it is accessible.');
     }
   }
 
@@ -74,7 +74,7 @@ export class GitHubService {
         message: response.data.commit.message,
         author: response.data.commit.author.name,
         date: response.data.commit.author.date,
-        changes: files.map((file: any) => ({
+        changes: files.map((file: GitHubFile) => ({
           filename: file.filename,
           changes: `${file.additions} additions, ${file.deletions} deletions`,
           patch: file.patch
@@ -90,8 +90,8 @@ export class GitHubService {
       );
 
       return analysis;
-    } catch (error) {
-      throw new Error('Error fetching commit details. Make sure the commit is accessible');
+    } catch {
+      throw new Error('Error fetching commit details. Make sure it is accessible');
     }
   }
 }

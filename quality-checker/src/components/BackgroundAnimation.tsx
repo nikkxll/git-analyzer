@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 
-export const AnimatedBackground = ({ children }: { children: React.ReactNode }) => {
+export const BackgroundAnimation = ({ children }: { children: React.ReactNode }) => {
   const [bgPosition, setBgPosition] = useState(0);
 
   useEffect(() => {
