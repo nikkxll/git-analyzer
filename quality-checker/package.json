@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
+    "@google/generative-ai": "^0.21.0",
     "@langchain/anthropic": "^0.3.8",
     "@octokit/core": "^6.1.2",
     "lucide-react": "^0.456.0",

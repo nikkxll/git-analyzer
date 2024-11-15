@@ -1,7 +1,5 @@
-import { ChatAnthropic } from "@langchain/anthropic";
-import { MessageContentText } from "@langchain/core/messages";
-import { PromptTemplate } from "@langchain/core/prompts";
-import { FeedbackSize, CommitInfo, Change } from "@/types";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { FeedbackSize, CommitInfo } from "@/types";
 import {
   REVIEW_TEMPLATES,
   COMMIT_TEMPLATES,
@@ -9,21 +7,32 @@ import {
 } from "@/constants/prompts";
 
 export class CodeAnalysisService {
-  private model: ChatAnthropic;
+  private genAI: GoogleGenerativeAI;
+  private model: any;
+
+  private formatResponse(text: string): string {
+    return text
+      .replace(/\*\*/g, '')
+      .replace(/\*/g, '-')
+      .trim();
+  }
 
   constructor() {
-    this.model = new ChatAnthropic({
-      anthropicApiKey: process.env.ANTHROPIC_API_KEY,
-      modelName: "claude-3-opus-20240229",
-      maxTokens: 300,
+    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    this.model = this.genAI.getGenerativeModel({ 
+      model: "gemini-pro",
+      generationConfig: {
+        maxOutputTokens: 1000,
+      },
     });
   }
 
-  private createModel(tokenLimit: number): ChatAnthropic {
-    return new ChatAnthropic({
-      anthropicApiKey: process.env.ANTHROPIC_API_KEY,
-      modelName: "claude-3-opus-20240229",
-      maxTokens: tokenLimit,
+  private createModel(tokenLimit: number) {
+    return this.genAI.getGenerativeModel({ 
+      model: "gemini-pro",
+      generationConfig: {
+        maxOutputTokens: tokenLimit,
+      },
     });
   }
 
@@ -32,39 +41,26 @@ export class CodeAnalysisService {
     size: FeedbackSize,
     onProgress?: (progress: number) => void
   ): Promise<string> {
-    this.model = this.createModel(TOKEN_LIMITS[size]);
+    try {
+      this.model = this.createModel(TOKEN_LIMITS[size]);
+      onProgress?.(25);
 
-    onProgress?.(25);
-    const template = `
-      ${REVIEW_TEMPLATES[size]}
-      
-      Code to analyze:
-      {code}
-    `;
+      const template = `
+        ${REVIEW_TEMPLATES[size]}
+        
+        Code to analyze:
+        ${code}
+      `;
 
-    const prompt = new PromptTemplate({
-      template,
-      inputVariables: ["code"],
-    });
+      onProgress?.(30);
+      const result = await this.model.generateContent(template);
+      onProgress?.(80);
 
-    const formattedPrompt = await prompt.format({ code });
-    onProgress?.(30);
-    const response = await this.model.invoke(formattedPrompt);
-    onProgress?.(80);
-
-    if (typeof response.content === "string") {
-      return response.content;
-    } else if (Array.isArray(response.content)) {
-      return response.content
-        .filter(
-          (item): item is MessageContentText =>
-            "type" in item && item.type === "text"
-        )
-        .map((item) => item.text)
-        .join("");
+      const response = await result.response;
+      return this.formatResponse(response.text());
+    } catch (error) {
+      throw new Error("Unable to process response");
     }
-
-    return "Unable to process response";
   }
 
   async analyzeCommit(
@@ -72,41 +68,32 @@ export class CodeAnalysisService {
     size: FeedbackSize,
     onProgress?: (progress: number) => void
   ): Promise<string> {
-    const changesText = commitInfo.changes
-      .map(
-        (change) => `
-      File: ${change.filename}
-      Changes: ${change.changes}
-      Patch:
-      ${change.patch}
-    `
-      )
-      .join("\n");
-
-    const template = COMMIT_TEMPLATES[size];
-
-    const formattedTemplate = template
-      .replace("{message}", commitInfo.message)
-      .replace("{author}", commitInfo.author)
-      .replace("{date}", commitInfo.date)
-      .replace("{changes}", changesText);
-
-    onProgress?.(80);
-    const response = await this.model.invoke(formattedTemplate);
-    onProgress?.(90);
-
-    if (typeof response.content === "string") {
-      return response.content;
-    } else if (Array.isArray(response.content)) {
-      return response.content
-        .filter(
-          (item): item is MessageContentText =>
-            "type" in item && item.type === "text"
+    try {
+      const changesText = commitInfo.changes
+        .map(
+          (change) => `
+        File: ${change.filename}
+        Changes: ${change.changes}
+        Patch:
+        ${change.patch}
+      `
         )
-        .map((item) => item.text)
-        .join("");
-    }
+        .join("\n");
 
-    return "Unable to process response";
+      const template = COMMIT_TEMPLATES[size]
+        .replace("{message}", commitInfo.message)
+        .replace("{author}", commitInfo.author)
+        .replace("{date}", commitInfo.date)
+        .replace("{changes}", changesText);
+
+      onProgress?.(80);
+      const result = await this.model.generateContent(template);
+      onProgress?.(90);
+
+      const response = await result.response;
+      return this.formatResponse(response.text());
+    } catch (error) {
+      throw new Error("Unable to process response");
+    }
   }
 }

@@ -95,7 +95,7 @@ export const COMMIT_TEMPLATES: Record<FeedbackSize, string> = {
 };
 
 export const TOKEN_LIMITS: Record<FeedbackSize, number> = {
-  concise: 300,
-  detailed: 500,
-  comprehensive: 1000,
+  concise: 500,
+  detailed: 2000,
+  comprehensive: 5000,
 };

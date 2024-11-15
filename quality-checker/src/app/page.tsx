@@ -6,10 +6,11 @@ import { AnimatedBackground } from "@/components/BackgroundAnimation";
 import { FormInput } from "@/components/FormInput";
 import { GitHubService } from "@/services/github";
 import { FeedbackSize, AnalysisType } from "@/types";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const CodeReviewApp = () => {
-  const [repo, setRepo] = useState("");
-  const [sha, setSha] = useState("");
+  const [repo, setRepo] = useLocalStorage('lastRepo', '');
+  const [sha, setSha] = useLocalStorage('lastSha', '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<string | null>(null);

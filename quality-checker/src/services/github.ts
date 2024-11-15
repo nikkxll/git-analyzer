@@ -43,8 +43,7 @@ export class GitHubService {
       onProgress?.(95);
       return analysis;
     } catch (error) {
-      console.error("Error fetching file:", error);
-      throw error;
+      throw new Error('Error fetching file content. Make sure the file is accessible.');
     }
   }
 
@@ -92,8 +91,7 @@ export class GitHubService {
 
       return analysis;
     } catch (error) {
-      console.error('Error fetching commit:', error);
-      throw error;
+      throw new Error('Error fetching commit details. Make sure the commit is accessible');
     }
   }
 }
