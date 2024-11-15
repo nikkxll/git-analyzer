@@ -80,17 +80,18 @@ const CodeReviewApp = () => {
 
   return (
     <BackgroundAnimation>
-      <div className="flex items-center gap-8 w-full max-w-6xl mx-auto">
+      <div className="flex flex-col lg:flex-row items-center gap-8 w-full max-w-6xl mx-auto">
         <div className="w-full max-w-xl max-h-max bg-gray-900/70 border border-gray-700 rounded-xl p-8 relative z-10 backdrop-blur-md">
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <Code2 className="h-8 w-8 text-blue-400" />
-              <h1 className="font-ethnocentric text-2xl bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
+              <h1 className="font-ethnocentric text-base lg:text-2xl bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
                 Code Quality Review
               </h1>
             </div>
             <p className="text-white text-sm font-electrolize">
-              Enter a GitHub repository and file/commit SHA to analyze code quality
+              Enter a GitHub repository and file/commit SHA to analyze code
+              quality
             </p>
           </div>
 
@@ -128,11 +129,15 @@ const CodeReviewApp = () => {
 
             <FormInput
               icon={<AlertCircle className="text-gray-400" />}
-              label="File/commit SHA"
+              label={analysisType === "file" ? "File SHA" : "Commit SHA"}
               value={sha}
               onChange={(e) => setSha(e.target.value)}
-              placeholder="Enter file/commit SHA"
-              tooltip="To get the file SHA: Go to the terminal → curl https://api.github.com/repos/{user}/{repo}/contents/{file_name}"
+              placeholder={
+                analysisType === "file" ? "Enter file SHA" : "Enter commit SHA"
+              }
+              tooltip={
+                analysisType === "file" ? "file-tooltip" : "commit-tooltip"
+              }
               dropdown={{
                 value: feedbackSize,
                 onChange: (value) => setFeedbackSize(value as FeedbackSize),
@@ -179,7 +184,7 @@ const CodeReviewApp = () => {
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <Code2 className="h-8 w-8 text-blue-400" />
-              <h1 className="font-ethnocentric text-2xl bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
+              <h1 className="font-ethnocentric text-xl lg:text-2xl bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
                 Analysis Results
               </h1>
             </div>
@@ -190,7 +195,7 @@ const CodeReviewApp = () => {
             </p>
           </div>
 
-          <div className="h-[400px] overflow-y-auto">
+          <div className="h-[100px] lg:h-[400px] overflow-y-auto">
             {analysis ? (
               <>
                 <button
