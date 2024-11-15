@@ -62,7 +62,13 @@ export const FormInput = ({
         <select
           value={dropdown.value}
           onChange={(e) => dropdown.onChange(e.target.value)}
-          className="bg-gray-800/50 border border-gray-600 rounded-lg text-white px-3 py-1 text-sm font-electrolize focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-gray-800/50 border border-gray-600 rounded-lg text-white px-3 py-1 text-sm font-electrolize focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none pr-8"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'><path stroke='%23888' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/></svg>")`,
+            backgroundPosition: 'right 0.33rem center',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '1.5em 1.5em',
+          }}
         >
           {dropdown.options.map((option) => (
             <option key={option.value} value={option.value}>
