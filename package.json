@@ -2,6 +2,11 @@
   "name": "quality-checker",
   "version": "0.1.0",
   "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "CI=true npm run test"
+    }
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
