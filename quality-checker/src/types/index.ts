@@ -1,0 +1,1 @@
+export type FeedbackSize = 'concise' | 'detailed' | 'comprehensive';
