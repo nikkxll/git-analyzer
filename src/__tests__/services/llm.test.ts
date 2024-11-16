@@ -38,7 +38,11 @@ describe("CodeAnalysisService", () => {
   });
 
   it("should handle errors in model creation indirectly through public methods", async () => {
-    jest.spyOn(service as any, "createModel").mockImplementation(() => {
+    type ServiceType = CodeAnalysisService & {
+      createModel: () => unknown;
+    };
+
+    jest.spyOn(service as ServiceType, "createModel").mockImplementation(() => {
       throw new Error("Mock error");
     });
 
