@@ -1,3 +1,5 @@
+"use client";
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -7,11 +9,13 @@ const geistSans = localFont({
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
+
 const ethnocentricItalic = localFont({
   src: [
     {
@@ -22,6 +26,7 @@ const ethnocentricItalic = localFont({
   ],
   variable: "--font-ethnocentric",
 });
+
 const ethnocentric = localFont({
   src: [
     {
@@ -32,11 +37,13 @@ const ethnocentric = localFont({
   ],
   variable: "--font-ethnocentric",
 });
+
 const audiowide = localFont({
   src: "./fonts/Audiowide-Regular.ttf",
   variable: "--font-audiowide",
   weight: "100 900",
 });
+
 const electrolize = localFont({
   src: "./fonts/Electrolize-Regular.ttf",
   variable: "--font-electrolize",

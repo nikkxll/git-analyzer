@@ -1,4 +1,4 @@
-import { GitHubService } from "@/services/github";
+import { GitHubService } from "@/services/gitDataAnalysis";
 import { CodeAnalysisService } from "@/services/llm";
 import { Octokit } from "@octokit/core";
 import { FeedbackSize, CommitInfo } from "@/types";
@@ -15,7 +15,7 @@ jest.mock("@octokit/core", () => ({
 
 jest.mock("../../services/llm", () => ({
   CodeAnalysisService: jest.fn().mockImplementation(() => ({
-    analyzeCode: jest.fn().mockResolvedValue("Mocked analysis result"),
+    analyzeFile: jest.fn().mockResolvedValue("Mocked analysis result"),
     analyzeCommit: jest.fn().mockResolvedValue("Mocked commit analysis"),
   })),
 }));
@@ -36,7 +36,7 @@ describe("GitHubService", () => {
     ).mock.results[0].value;
   });
 
-  describe("getFileContent", () => {
+  describe("getFileAnalysis", () => {
     const mockParams = {
       owner: "test owner",
       repo: "test repo",
@@ -57,7 +57,7 @@ describe("GitHubService", () => {
     it("should fetch and analyze file content successfully", async () => {
       mockOctokit.request.mockResolvedValueOnce(mockFileResponse);
 
-      const result = await service.getFileContent(
+      const result = await service.getFileAnalysis(
         mockParams.owner,
         mockParams.repo,
         mockParams.fileSha,
@@ -77,7 +77,7 @@ describe("GitHubService", () => {
         })
       );
 
-      expect(mockCodeAnalysis.analyzeCode).toHaveBeenCalledWith(
+      expect(mockCodeAnalysis.analyzeFile).toHaveBeenCalledWith(
         "test content",
         mockParams.FeedbackSize,
         mockParams.onProgress
@@ -89,7 +89,7 @@ describe("GitHubService", () => {
     it("should call progress callback with correct values", async () => {
       mockOctokit.request.mockResolvedValueOnce(mockFileResponse);
 
-      await service.getFileContent(
+      await service.getFileAnalysis(
         mockParams.owner,
         mockParams.repo,
         mockParams.fileSha,
@@ -107,7 +107,7 @@ describe("GitHubService", () => {
       mockOctokit.request.mockRejectedValueOnce(new Error("API Error"));
 
       await expect(
-        service.getFileContent(
+        service.getFileAnalysis(
           mockParams.owner,
           mockParams.repo,
           mockParams.fileSha,
@@ -120,7 +120,7 @@ describe("GitHubService", () => {
     });
   });
 
-  describe("getCommitDetails", () => {
+  describe("getCommitAnalysis", () => {
     const mockParams = {
       owner: "testOwner",
       repoName: "testRepo",
@@ -155,7 +155,7 @@ describe("GitHubService", () => {
     it("should fetch and analyze commit details successfully", async () => {
       mockOctokit.request.mockResolvedValueOnce(mockCommitResponse);
 
-      const result = await service.getCommitDetails(
+      const result = await service.getCommitAnalysis(
         mockParams.owner,
         mockParams.repoName,
         mockParams.sha,
@@ -200,7 +200,7 @@ describe("GitHubService", () => {
     it("should call progress callback with correct values", async () => {
       mockOctokit.request.mockResolvedValueOnce(mockCommitResponse);
 
-      await service.getCommitDetails(
+      await service.getCommitAnalysis(
         mockParams.owner,
         mockParams.repoName,
         mockParams.sha,
@@ -208,16 +208,17 @@ describe("GitHubService", () => {
         mockParams.onProgress
       );
 
+      expect(mockParams.onProgress).toHaveBeenCalledWith(5);
+      expect(mockParams.onProgress).toHaveBeenCalledWith(10);
       expect(mockParams.onProgress).toHaveBeenCalledWith(20);
-      expect(mockParams.onProgress).toHaveBeenCalledWith(40);
-      expect(mockParams.onProgress).toHaveBeenCalledWith(60);
+      expect(mockParams.onProgress).toHaveBeenCalledWith(95);
     });
 
     it("should throw error when commit fetch fails", async () => {
       mockOctokit.request.mockRejectedValueOnce(new Error("API Error"));
 
       await expect(
-        service.getCommitDetails(
+        service.getCommitAnalysis(
           mockParams.owner,
           mockParams.repoName,
           mockParams.sha,
@@ -247,7 +248,7 @@ describe("GitHubService", () => {
 
       mockOctokit.request.mockResolvedValueOnce(responseWithoutFiles);
 
-      const result = await service.getCommitDetails(
+      const result = await service.getCommitAnalysis(
         mockParams.owner,
         mockParams.repoName,
         mockParams.sha,

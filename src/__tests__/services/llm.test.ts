@@ -24,13 +24,13 @@ describe("CodeAnalysisService", () => {
   });
 
   it("should format the response correctly", async () => {
-    const result = await service.analyzeCode("Mock string", "concise");
+    const result = await service.analyzeFile("Mock string", "concise");
     expect(result).toBe("Mock response text");
   });
 
   it("should call onProgress with the correct values during code analysis", async () => {
     const onProgress = jest.fn();
-    await service.analyzeCode("Mock string", "concise", onProgress);
+    await service.analyzeFile("Mock string", "concise", onProgress);
 
     expect(onProgress).toHaveBeenCalledWith(25);
     expect(onProgress).toHaveBeenCalledWith(30);
@@ -47,7 +47,7 @@ describe("CodeAnalysisService", () => {
     });
 
     await expect(
-      service.analyzeCode("Mock string", "detailed")
+      service.analyzeFile("Mock string", "detailed")
     ).rejects.toThrow("Unable to process response");
   });
 

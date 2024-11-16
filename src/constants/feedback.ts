@@ -1,4 +1,13 @@
-import { FeedbackSize } from "@/types";
+import { FeedbackSize, AnalysisType } from "@/types";
+
+export const FEEDBACK_OPTIONS = [
+  { value: "concise", label: "Quick Review" },
+  { value: "detailed", label: "Detailed Analysis" },
+  { value: "comprehensive", label: "Deep Dive" },
+];
+
+export const DEFAULT_FEEDBACK_SIZE: FeedbackSize = "concise";
+export const DEFAULT_ANALYSIS_TYPE: AnalysisType = "file";
 
 export const REVIEW_TEMPLATES: Record<FeedbackSize, string> = {
   concise: `

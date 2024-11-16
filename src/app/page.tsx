@@ -4,9 +4,14 @@ import { useState } from "react";
 import { AlertCircle, Github, Code2, Copy, Check } from "lucide-react";
 import { BackgroundAnimation } from "@/components/BackgroundAnimation";
 import { FormInput } from "@/components/FormInput";
-import { GitHubService } from "@/services/github";
+import { GitHubService } from "@/services/gitDataAnalysis";
 import { FeedbackSize, AnalysisType } from "@/types";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import {
+  FEEDBACK_OPTIONS,
+  DEFAULT_FEEDBACK_SIZE,
+  DEFAULT_ANALYSIS_TYPE,
+} from "@/constants/feedback";
 
 const CodeReviewApp = () => {
   const [repo, setRepo] = useLocalStorage("lastRepo", "");
@@ -14,16 +19,10 @@ const CodeReviewApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<string | null>(null);
-  const [feedbackSize, setFeedbackSize] = useState<FeedbackSize>("concise");
+  const [feedbackSize, setFeedbackSize] = useState<FeedbackSize>(DEFAULT_FEEDBACK_SIZE);
   const [progress, setProgress] = useState(0);
-  const [analysisType, setAnalysisType] = useState<AnalysisType>("file");
+  const [analysisType, setAnalysisType] = useState<AnalysisType>(DEFAULT_ANALYSIS_TYPE);
   const [copied, setCopied] = useState(false);
-
-  const feedbackOptions = [
-    { value: "concise", label: "Quick Review" },
-    { value: "detailed", label: "Detailed Analysis" },
-    { value: "comprehensive", label: "Deep Dive" },
-  ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,15 +41,15 @@ const CodeReviewApp = () => {
       const githubService = new GitHubService();
 
       const analysis =
-        analysisType === "file"
-          ? await githubService.getFileContent(
+        analysisType === DEFAULT_ANALYSIS_TYPE
+          ? await githubService.getFileAnalysis(
               owner,
               repoName,
               sha,
               feedbackSize,
               (progress: number) => setProgress(progress)
             )
-          : await githubService.getCommitDetails(
+          : await githubService.getCommitAnalysis(
               owner,
               repoName,
               sha,
@@ -141,7 +140,7 @@ const CodeReviewApp = () => {
               dropdown={{
                 value: feedbackSize,
                 onChange: (value) => setFeedbackSize(value as FeedbackSize),
-                options: feedbackOptions,
+                options: FEEDBACK_OPTIONS,
               }}
             />
 

@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { useState, useEffect } from 'react';
 
 export const BackgroundAnimation = ({ children }: { children: React.ReactNode }) => {
