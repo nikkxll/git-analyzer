@@ -19,9 +19,13 @@ const CodeReviewApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<string | null>(null);
-  const [feedbackSize, setFeedbackSize] = useState<FeedbackSize>(DEFAULT_FEEDBACK_SIZE);
+  const [feedbackSize, setFeedbackSize] = useState<FeedbackSize>(
+    DEFAULT_FEEDBACK_SIZE,
+  );
   const [progress, setProgress] = useState(0);
-  const [analysisType, setAnalysisType] = useState<AnalysisType>(DEFAULT_ANALYSIS_TYPE);
+  const [analysisType, setAnalysisType] = useState<AnalysisType>(
+    DEFAULT_ANALYSIS_TYPE,
+  );
   const [copied, setCopied] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,14 +51,14 @@ const CodeReviewApp = () => {
               repoName,
               sha,
               feedbackSize,
-              (progress: number) => setProgress(progress)
+              (progress: number) => setProgress(progress),
             )
           : await githubService.getCommitAnalysis(
               owner,
               repoName,
               sha,
               feedbackSize,
-              (progress: number) => setProgress(progress)
+              (progress: number) => setProgress(progress),
             );
 
       setAnalysis(analysis);

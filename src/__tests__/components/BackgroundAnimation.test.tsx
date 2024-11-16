@@ -7,7 +7,7 @@ describe("BackgroundAnimation", () => {
     const { container } = render(
       <BackgroundAnimation>
         <div>Test content</div>
-      </BackgroundAnimation>
+      </BackgroundAnimation>,
     );
 
     expect(container.firstChild).toHaveClass("min-h-screen");

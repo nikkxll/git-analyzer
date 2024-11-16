@@ -12,7 +12,7 @@ describe("FormInput", () => {
         value="Test Value"
         onChange={() => {}}
         placeholder="Test Placeholder"
-      />
+      />,
     );
 
     expect(getByText("Test Label")).toBeInTheDocument();
@@ -28,7 +28,7 @@ describe("FormInput", () => {
         value="Test Value"
         onChange={mockOnChange}
         placeholder="Test Placeholder"
-      />
+      />,
     );
 
     const input = getByPlaceholderText("Test Placeholder");
@@ -54,7 +54,7 @@ describe("FormInput", () => {
           onChange: () => {},
           options,
         }}
-      />
+      />,
     );
 
     const dropdown = getByRole("combobox");

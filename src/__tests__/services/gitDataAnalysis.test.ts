@@ -62,7 +62,7 @@ describe("GitHubService", () => {
         mockParams.repo,
         mockParams.fileSha,
         mockParams.FeedbackSize,
-        mockParams.onProgress
+        mockParams.onProgress,
       );
 
       expect(mockOctokit.request).toHaveBeenCalledWith(
@@ -74,13 +74,13 @@ describe("GitHubService", () => {
           headers: {
             "X-GitHub-Api-Version": "2022-11-28",
           },
-        })
+        }),
       );
 
       expect(mockCodeAnalysis.analyzeFile).toHaveBeenCalledWith(
         "test content",
         mockParams.FeedbackSize,
-        mockParams.onProgress
+        mockParams.onProgress,
       );
 
       expect(result).toBe("Mocked analysis result");
@@ -94,7 +94,7 @@ describe("GitHubService", () => {
         mockParams.repo,
         mockParams.fileSha,
         mockParams.FeedbackSize,
-        mockParams.onProgress
+        mockParams.onProgress,
       );
 
       expect(mockParams.onProgress).toHaveBeenCalledWith(5);
@@ -112,10 +112,10 @@ describe("GitHubService", () => {
           mockParams.repo,
           mockParams.fileSha,
           mockParams.FeedbackSize,
-          mockParams.onProgress
-        )
+          mockParams.onProgress,
+        ),
       ).rejects.toThrow(
-        "Error fetching file content. Make sure it is accessible."
+        "Error fetching file content. Make sure it is accessible.",
       );
     });
   });
@@ -160,7 +160,7 @@ describe("GitHubService", () => {
         mockParams.repoName,
         mockParams.sha,
         mockParams.FeedbackSize,
-        mockParams.onProgress
+        mockParams.onProgress,
       );
 
       expect(mockOctokit.request).toHaveBeenCalledWith(
@@ -172,7 +172,7 @@ describe("GitHubService", () => {
           headers: {
             "X-GitHub-Api-Version": "2022-11-28",
           },
-        })
+        }),
       );
 
       const expectedCommitInfo: CommitInfo = {
@@ -191,7 +191,7 @@ describe("GitHubService", () => {
       expect(mockCodeAnalysis.analyzeCommit).toHaveBeenCalledWith(
         expectedCommitInfo,
         mockParams.FeedbackSize,
-        mockParams.onProgress
+        mockParams.onProgress,
       );
 
       expect(result).toBe("Mocked commit analysis");
@@ -205,7 +205,7 @@ describe("GitHubService", () => {
         mockParams.repoName,
         mockParams.sha,
         mockParams.FeedbackSize,
-        mockParams.onProgress
+        mockParams.onProgress,
       );
 
       expect(mockParams.onProgress).toHaveBeenCalledWith(5);
@@ -223,10 +223,10 @@ describe("GitHubService", () => {
           mockParams.repoName,
           mockParams.sha,
           mockParams.FeedbackSize,
-          mockParams.onProgress
-        )
+          mockParams.onProgress,
+        ),
       ).rejects.toThrow(
-        "Error fetching commit details. Make sure it is accessible"
+        "Error fetching commit details. Make sure it is accessible",
       );
     });
 
@@ -253,7 +253,7 @@ describe("GitHubService", () => {
         mockParams.repoName,
         mockParams.sha,
         mockParams.FeedbackSize,
-        mockParams.onProgress
+        mockParams.onProgress,
       );
 
       expect(mockCodeAnalysis.analyzeCommit).toHaveBeenCalledWith(
@@ -261,7 +261,7 @@ describe("GitHubService", () => {
           changes: [],
         }),
         mockParams.FeedbackSize,
-        mockParams.onProgress
+        mockParams.onProgress,
       );
 
       expect(result).toBe("Mocked commit analysis");

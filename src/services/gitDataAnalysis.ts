@@ -33,21 +33,21 @@ export class GitHubService {
 
   /**
    * Fetches and analyzes the content of a specific file from a GitHub repository.
-   * 
+   *
    * @remarks
    * This method performs the following steps:
    * 1. Fetches the file content from GitHub
    * 2. Decodes the base64 content
    * 3. Analyzes the code using CodeAnalysisService class methods
-   * 
+   *
    * @param owner - The GitHub username
    * @param repo - The name of the repository
    * @param fileSha - The SHA hash of the file
    * @param FeedbackSize - The desired level of detail in the analysis
    * @param onProgress - Optional callback function to track loading progress
-   * 
+   *
    * @returns A Promise that resolves to the analysis result as a string
-   * 
+   *
    * @throws {Error} When file content cannot be fetched or accessed
    */
   async getFileAnalysis(
@@ -55,7 +55,7 @@ export class GitHubService {
     repo: string,
     fileSha: string,
     FeedbackSize: FeedbackSize,
-    onProgress?: (progress: number) => void
+    onProgress?: (progress: number) => void,
   ): Promise<string> {
     try {
       onProgress?.(5);
@@ -68,47 +68,47 @@ export class GitHubService {
           headers: {
             "X-GitHub-Api-Version": "2022-11-28",
           },
-        }
+        },
       );
 
       onProgress?.(10);
       const content = Buffer.from(response.data.content, "base64").toString(
-        "utf-8"
+        "utf-8",
       );
 
       onProgress?.(20);
       const analysis = await this.codeAnalysis.analyzeFile(
         content,
         FeedbackSize,
-        onProgress
+        onProgress,
       );
 
       onProgress?.(95);
       return analysis;
     } catch {
       throw new Error(
-        "Error fetching file content. Make sure it is accessible."
+        "Error fetching file content. Make sure it is accessible.",
       );
     }
   }
 
   /**
    * Fetches and analyzes details of a specific commit from a GitHub repository.
-   * 
+   *
    * @remarks
    * This method:
    * 1. Retrieves commit information
    * 2. Formats the commit data into a structured format
    * 3. Analyzes the commit using CodeAnalysisService class methods
-   * 
+   *
    * @param owner - The GitHub username
    * @param repoName - The name of the repository
    * @param sha - The SHA hash of the file
    * @param FeedbackSize - The desired level of detail in the analysis
    * @param onProgress - Optional callback function to track loading progress
-   * 
+   *
    * @returns A Promise that resolves to the commit analysis result as a string
-   * 
+   *
    * @throws {Error} When commit details cannot be fetched or accessed
    */
   async getCommitAnalysis(
@@ -116,7 +116,7 @@ export class GitHubService {
     repoName: string,
     sha: string,
     FeedbackSize: FeedbackSize,
-    onProgress?: (progress: number) => void
+    onProgress?: (progress: number) => void,
   ): Promise<string> {
     try {
       onProgress?.(5);
@@ -129,7 +129,7 @@ export class GitHubService {
           headers: {
             "X-GitHub-Api-Version": "2022-11-28",
           },
-        }
+        },
       );
 
       onProgress?.(10);
@@ -148,18 +148,18 @@ export class GitHubService {
       };
 
       onProgress?.(20);
-      
+
       const analysis = await this.codeAnalysis.analyzeCommit(
         commitInfo,
         FeedbackSize,
-        onProgress
+        onProgress,
       );
       onProgress?.(95);
 
       return analysis;
     } catch {
       throw new Error(
-        "Error fetching commit details. Make sure it is accessible"
+        "Error fetching commit details. Make sure it is accessible",
       );
     }
   }

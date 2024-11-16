@@ -47,7 +47,7 @@ describe("CodeAnalysisService", () => {
     });
 
     await expect(
-      service.analyzeFile("Mock string", "detailed")
+      service.analyzeFile("Mock string", "detailed"),
     ).rejects.toThrow("Unable to process response");
   });
 
@@ -69,7 +69,7 @@ describe("CodeAnalysisService", () => {
     const result = await service.analyzeCommit(
       commitInfo,
       "comprehensive",
-      onProgress
+      onProgress,
     );
     expect(result).toBe("Mock response text");
     expect(onProgress).toHaveBeenCalledWith(30);
@@ -95,13 +95,13 @@ describe("CodeAnalysisService", () => {
     await service.analyzeCommit(commitInfo, "comprehensive");
 
     expect(generateContentSpy).toHaveBeenCalledWith(
-      expect.stringContaining("init commit")
+      expect.stringContaining("init commit"),
     );
     expect(generateContentSpy).toHaveBeenCalledWith(
-      expect.stringContaining("Test User")
+      expect.stringContaining("Test User"),
     );
     expect(generateContentSpy).toHaveBeenCalledWith(
-      expect.stringContaining("test.js")
+      expect.stringContaining("test.js"),
     );
   });
 });

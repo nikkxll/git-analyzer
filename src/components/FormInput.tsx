@@ -40,19 +40,20 @@ export const FormInput = ({
           </div>
           <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 w-[525px] p-4 bg-gray-800 text-sm text-gray-200 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity z-50 whitespace-normal">
             {tooltip === "file-tooltip" ? (
-            <div className="font-mono text-xs">
-              To get the file SHA: Go to the terminal →<br />
-              curl https://api.github.com/repos/
-              <span className="text-blue-400">{"{user}"}</span>/
-              <span className="text-blue-400">{"{repo}"}</span>/contents/
-              <span className="text-blue-400">{"{file_name}"}</span>
-              <br /> <br /> Replace user, repo, and file_name with the actual
-              values
-            </div>
+              <div className="font-mono text-xs">
+                To get the file SHA: Go to the terminal →<br />
+                curl https://api.github.com/repos/
+                <span className="text-blue-400">{"{user}"}</span>/
+                <span className="text-blue-400">{"{repo}"}</span>/contents/
+                <span className="text-blue-400">{"{file_name}"}</span>
+                <br /> <br /> Replace user, repo, and file_name with the actual
+                values
+              </div>
             ) : (
-            <div className="font-mono text-xs">
-              To get the commit SHA: Go to the GitHub repo → Click on the commits → Copy Full SHA
-            </div>
+              <div className="font-mono text-xs">
+                To get the commit SHA: Go to the GitHub repo → Click on the
+                commits → Copy Full SHA
+              </div>
             )}
             <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-800"></div>
           </div>
