@@ -26,7 +26,7 @@ In development mode
 npm i && npm run dev
 ```
 
-To run application properly you have to add ```.env.local``` file in the root of the project. In this file add:
+To run the application correctly, create a ```.env.local``` file in the project's root directory and add the following variables:
 ```
 GITHUB_TOKEN=your_generated_github_token
 GEMINI_API_KEY=your_generated_gemini_api_key
@@ -38,6 +38,6 @@ Link to the web page:
 
 https://git-quality-checker.onrender.com/
 
-(Might be some troubles with launch, try to open and refresh the page in 2-3 minutes)
+_Note: Initial loading may take 2-3 minutes. Refresh the page if necessary._
 
-Also you might face some issues with analyzing file/commit one by one. This is happening because API couldn't process the requests so fast. Try again in 20-30 seconds or reload the page.
+You may experience delays or failures when analyzing files/commits individually due to API rate limits or processing time. If this occurs, please try again after 20-30 seconds or reload the page.
