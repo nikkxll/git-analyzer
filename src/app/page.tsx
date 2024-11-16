@@ -180,7 +180,7 @@ const CodeReviewApp = () => {
         </div>
 
         <div
-          className={`w-full max-w-xl bg-gray-900/70 border border-gray-700 rounded-xl p-8 mt-48 lg:mt-0 relative z-100 backdrop-blur-md ${
+          className={`w-full max-w-xl bg-gray-900/70 border border-gray-700 rounded-xl p-8 mt-36 lg:mt-0 relative z-100 backdrop-blur-md ${
             !analysis ? "opacity-50" : ""
           }`}
         >
