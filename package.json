@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm i && next build",
+    "build": "npm i --legacy-peer-deps && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
