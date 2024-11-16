@@ -26,7 +26,7 @@ In development mode
 npm i && npm run dev
 ```
 
-To run application properly you have to ```.env.local``` file in the root of the project. In this file add:
+To run application properly you have to add ```.env.local``` file in the root of the project. In this file add:
 ```
 GITHUB_TOKEN=your_generated_github_token
 GEMINI_API_KEY=your_generated_gemini_api_key
