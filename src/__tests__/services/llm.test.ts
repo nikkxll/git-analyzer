@@ -1,107 +1,121 @@
 import { CodeAnalysisService } from "@/services/llm";
 import { CommitInfo } from "@/types";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-jest.mock("@google/generative-ai", () => {
-  return {
-    GoogleGenerativeAI: jest.fn().mockImplementation(() => {
-      return {
-        getGenerativeModel: jest.fn().mockReturnValue({
-          generateContent: jest.fn().mockResolvedValue({
-            response: {
-              text: jest.fn().mockReturnValue("Mock response text"),
-            },
-          }),
-        }),
-      };
-    }),
-  };
+const mockGenerateContent = jest.fn().mockResolvedValue({
+  response: {
+    text: () => "Mock response text",
+  },
 });
+
+const mockGetGenerativeModel = jest.fn().mockReturnValue({
+  generateContent: mockGenerateContent,
+});
+
+const mockGenAI = {
+  getGenerativeModel: mockGetGenerativeModel,
+};
+
+jest.mock("@google/generative-ai", () => ({
+  GoogleGenerativeAI: jest.fn().mockImplementation(() => mockGenAI),
+}));
 
 describe("CodeAnalysisService", () => {
   let service: CodeAnalysisService;
+
   beforeEach(() => {
-    service = new CodeAnalysisService();
+    jest.clearAllMocks();
+    service = new CodeAnalysisService(
+      mockGenAI as unknown as GoogleGenerativeAI,
+    );
   });
 
-  it("should format the response correctly", async () => {
-    const result = await service.analyzeFile("Mock string", "concise");
-    expect(result).toBe("Mock response text");
-  });
-
-  it("should call onProgress with the correct values during code analysis", async () => {
-    const onProgress = jest.fn();
-    await service.analyzeFile("Mock string", "concise", onProgress);
-
-    expect(onProgress).toHaveBeenCalledWith(25);
-    expect(onProgress).toHaveBeenCalledWith(30);
-    expect(onProgress).toHaveBeenCalledWith(80);
-  });
-
-  it("should handle errors in model creation indirectly through public methods", async () => {
-    type ServiceType = CodeAnalysisService & {
-      createModel: () => unknown;
-    };
-
-    jest.spyOn(service as ServiceType, "createModel").mockImplementation(() => {
-      throw new Error("Mock error");
+  describe("analyzeFile", () => {
+    it("should format and return the response correctly", async () => {
+      const result = await service.analyzeFile(
+        "console.log('test')",
+        "concise",
+      );
+      expect(result).toBe("Mock response text");
+      expect(mockGetGenerativeModel).toHaveBeenCalledWith({
+        model: "gemini-pro",
+        generationConfig: expect.any(Object),
+      });
     });
 
-    await expect(
-      service.analyzeFile("Mock string", "detailed"),
-    ).rejects.toThrow("Unable to process response");
+    it("should call onProgress with correct progress values", async () => {
+      const onProgress = jest.fn();
+      await service.analyzeFile("const x = 1;", "concise", onProgress);
+
+      expect(onProgress).toHaveBeenCalledTimes(3);
+      expect(onProgress).toHaveBeenNthCalledWith(1, 25);
+      expect(onProgress).toHaveBeenNthCalledWith(2, 30);
+      expect(onProgress).toHaveBeenNthCalledWith(3, 80);
+    });
+
+    it("should handle API errors gracefully", async () => {
+      mockGenerateContent.mockRejectedValueOnce(new Error("API Error"));
+
+      await expect(
+        service.analyzeFile("const x = 1;", "detailed"),
+      ).rejects.toThrow("Unable to process response");
+    });
   });
 
-  it("should call onProgress with correct values during commit analysis", async () => {
-    const commitInfo: CommitInfo = {
-      message: "init commit",
+  describe("analyzeCommit", () => {
+    const mockCommitInfo: CommitInfo = {
+      message: "feat: add new feature",
       author: "Test User",
       date: "2024-01-01",
       changes: [
         {
-          filename: "test.js",
-          changes: "Added debug statement",
-          patch: '+ console.log("logging for test");',
+          filename: "test.ts",
+          changes: "Added new function",
+          patch: "+ function test() { return true; }",
         },
       ],
     };
 
-    const onProgress = jest.fn();
-    const result = await service.analyzeCommit(
-      commitInfo,
-      "comprehensive",
-      onProgress,
-    );
-    expect(result).toBe("Mock response text");
-    expect(onProgress).toHaveBeenCalledWith(30);
-    expect(onProgress).toHaveBeenCalledWith(90);
-  });
+    it("should analyze commit content correctly", async () => {
+      const result = await service.analyzeCommit(
+        mockCommitInfo,
+        "comprehensive",
+      );
 
-  it("should call generateContent with the correct template during commit analysis", async () => {
-    const commitInfo: CommitInfo = {
-      message: "init commit",
-      author: "Test User",
-      date: "2024-01-01",
-      changes: [
-        {
-          filename: "test.js",
-          changes: "Added debug statement",
-          patch: '+ console.log("logging for test");',
-        },
-      ],
-    };
+      expect(result).toBe("Mock response text");
+      expect(mockGenerateContent).toHaveBeenCalledWith(
+        expect.stringContaining(mockCommitInfo.message),
+      );
+    });
 
-    const generateContentSpy = jest.spyOn(service["model"], "generateContent");
+    it("should include all commit details in the analysis template", async () => {
+      await service.analyzeCommit(mockCommitInfo, "comprehensive");
 
-    await service.analyzeCommit(commitInfo, "comprehensive");
+      const templateCall = mockGenerateContent.mock.calls[0][0] as string;
 
-    expect(generateContentSpy).toHaveBeenCalledWith(
-      expect.stringContaining("init commit"),
-    );
-    expect(generateContentSpy).toHaveBeenCalledWith(
-      expect.stringContaining("Test User"),
-    );
-    expect(generateContentSpy).toHaveBeenCalledWith(
-      expect.stringContaining("test.js"),
-    );
+      expect(templateCall).toContain(mockCommitInfo.message);
+      expect(templateCall).toContain(mockCommitInfo.author);
+      expect(templateCall).toContain(mockCommitInfo.date);
+      expect(templateCall).toContain(mockCommitInfo.changes[0].filename);
+      expect(templateCall).toContain(mockCommitInfo.changes[0].patch);
+    });
+
+    it("should call onProgress with correct values", async () => {
+      const onProgress = jest.fn();
+      await service.analyzeCommit(mockCommitInfo, "comprehensive", onProgress);
+
+      expect(onProgress).toHaveBeenCalledTimes(3);
+      expect(onProgress).toHaveBeenNthCalledWith(1, 25);
+      expect(onProgress).toHaveBeenNthCalledWith(2, 30);
+      expect(onProgress).toHaveBeenNthCalledWith(3, 90);
+    });
+
+    it("should handle API errors during commit analysis", async () => {
+      mockGenerateContent.mockRejectedValueOnce(new Error("API Error"));
+
+      await expect(
+        service.analyzeCommit(mockCommitInfo, "comprehensive"),
+      ).rejects.toThrow("Unable to process response");
+    });
   });
 });

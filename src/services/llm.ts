@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, GenerativeModel } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { FeedbackSize, CommitInfo } from "@/types";
 import {
   REVIEW_TEMPLATES,
@@ -25,22 +25,11 @@ import {
  * ```
  */
 export class CodeAnalysisService {
-  private genAI: GoogleGenerativeAI;
-  private model: GenerativeModel;
-
-  private formatResponse(text: string): string {
-    return text.replace(/\*\*/g, "").replace(/\*/g, "-").trim();
-  }
-
-  constructor() {
-    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-    this.model = this.genAI.getGenerativeModel({
-      model: "gemini-pro",
-      generationConfig: {
-        maxOutputTokens: 1000,
-      },
-    });
-  }
+  constructor(
+    private readonly genAI = new GoogleGenerativeAI(
+      process.env.GEMINI_API_KEY!,
+    ),
+  ) {}
 
   private createModel(tokenLimit: number) {
     return this.genAI.getGenerativeModel({
@@ -49,6 +38,10 @@ export class CodeAnalysisService {
         maxOutputTokens: tokenLimit,
       },
     });
+  }
+
+  private formatResponse(text: string): string {
+    return text.replace(/\*\*/g, "").replace(/\*/g, "-").trim();
   }
 
   /**

@@ -21,15 +21,10 @@ import { FeedbackSize, CommitInfo, GitHubFile } from "@/types";
  * ```
  */
 export class GitHubService {
-  private octokit: Octokit;
-  private codeAnalysis: CodeAnalysisService;
-
-  constructor() {
-    this.octokit = new Octokit({
-      auth: process.env.GITHUB_TOKEN,
-    });
-    this.codeAnalysis = new CodeAnalysisService();
-  }
+  constructor(
+    private readonly octokit = new Octokit({ auth: process.env.GITHUB_TOKEN }),
+    private readonly codeAnalysis = new CodeAnalysisService(),
+  ) {}
 
   /**
    * Fetches and analyzes the content of a specific file from a GitHub repository.
