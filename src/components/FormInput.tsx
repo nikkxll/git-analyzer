@@ -65,7 +65,7 @@ export const FormInput = ({
       required
     />
     {dropdown && (
-      <div className="flex items-center justify-start mt-2 pt-4">
+      <div className="flex items-center justify-start mt-2 pt-6 lg:pt-4">
         <select
           value={dropdown.value}
           onChange={(e) => dropdown.onChange(e.target.value)}

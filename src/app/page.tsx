@@ -80,16 +80,16 @@ const CodeReviewApp = () => {
 
   return (
     <BackgroundAnimation>
-      <div className="flex flex-col lg:flex-row items-center gap-8 w-full max-w-6xl mx-auto">
+      <div className="flex flex-col lg:flex-row items-center gap-8 w-full max-w-6xl mx-auto mt-24 lg:mt-0">
         <div className="w-full max-w-xl max-h-max bg-gray-900/70 border border-gray-700 rounded-xl p-8 relative z-10 backdrop-blur-md">
-          <div className="mb-8">
+          <div className="mb-5">
             <div className="flex items-center gap-3 mb-4">
               <Code2 className="h-8 w-8 text-blue-400" />
               <h1 className="font-ethnocentric text-base lg:text-2xl bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
                 Code Quality Review
               </h1>
             </div>
-            <p className="text-white text-sm font-electrolize">
+            <p className="text-white text-lg font-electrolize">
               Enter a GitHub repository and file/commit SHA to analyze code
               quality
             </p>
@@ -98,7 +98,7 @@ const CodeReviewApp = () => {
           <div className="mb-6 flex rounded-lg overflow-hidden">
             <button
               onClick={() => setAnalysisType("file")}
-              className={`flex-1 py-2 px-4 ${
+              className={`flex-1 py-5 px-1 lg:py-2 lg:px-4 ${
                 analysisType === "file"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-800 text-gray-400"
@@ -108,7 +108,7 @@ const CodeReviewApp = () => {
             </button>
             <button
               onClick={() => setAnalysisType("commit")}
-              className={`flex-1 py-2 px-4 ${
+              className={`flex-1 py-5 px-1 lg:py-2 lg:px-4 ${
                 analysisType === "commit"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-800 text-gray-400"
@@ -118,7 +118,7 @@ const CodeReviewApp = () => {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-8 lg:space-y-6">
             <FormInput
               icon={<Github className="text-gray-400" />}
               label="Repository Path"
@@ -147,7 +147,7 @@ const CodeReviewApp = () => {
 
             <button
               type="submit"
-              className="font-audiowide w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
+              className="font-audiowide w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-4 lg:py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
               disabled={loading}
             >
               {loading ? "Analyzing..." : "Analyze Code Quality"}
@@ -177,7 +177,7 @@ const CodeReviewApp = () => {
         </div>
 
         <div
-          className={`w-full max-w-xl bg-gray-900/70 border border-gray-700 rounded-xl p-8 relative z-100 backdrop-blur-md ${
+          className={`w-full max-w-xl bg-gray-900/70 border border-gray-700 rounded-xl p-8 mt-48 lg:mt-0 relative z-100 backdrop-blur-md ${
             !analysis ? "opacity-50" : ""
           }`}
         >
@@ -195,7 +195,7 @@ const CodeReviewApp = () => {
             </p>
           </div>
 
-          <div className="h-[100px] lg:h-[400px] overflow-y-auto">
+          <div className="h-[630px] lg:h-[400px] overflow-y-auto">
             {analysis ? (
               <>
                 <button

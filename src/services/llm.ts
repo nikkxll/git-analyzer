@@ -42,7 +42,7 @@ export class CodeAnalysisService {
     onProgress?: (progress: number) => void
   ): Promise<string> {
     try {
-      this.model = this.createModel(TOKEN_LIMITS[size]);
+      const model = this.createModel(TOKEN_LIMITS[size]);
       onProgress?.(25);
 
       const template = `
@@ -53,10 +53,10 @@ export class CodeAnalysisService {
       `;
 
       onProgress?.(30);
-      const result = await this.model.generateContent(template);
+      const result = await model.generateContent(template);
       onProgress?.(80);
 
-      const response = await result.response;
+      const response = result.response;
       return this.formatResponse(response.text());
     } catch {
       throw new Error("Unable to process response");
@@ -69,6 +69,9 @@ export class CodeAnalysisService {
     onProgress?: (progress: number) => void
   ): Promise<string> {
     try {
+      const model = this.createModel(TOKEN_LIMITS[size]);
+      onProgress?.(25);
+
       const changesText = commitInfo.changes
         .map(
           (change) => `
@@ -86,11 +89,11 @@ export class CodeAnalysisService {
         .replace("{date}", commitInfo.date)
         .replace("{changes}", changesText);
 
-      onProgress?.(80);
-      const result = await this.model.generateContent(template);
+      onProgress?.(30);
+      const result = await model.generateContent(template);
       onProgress?.(90);
 
-      const response = await result.response;
+      const response = result.response;
       return this.formatResponse(response.text());
     } catch {
       throw new Error("Unable to process response");
