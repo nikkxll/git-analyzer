@@ -13,9 +13,9 @@ export const BackgroundAnimation = ({ children }: { children: React.ReactNode })
 
   const backgroundStyle = {
     backgroundImage: `linear-gradient(${bgPosition}deg, 
-      rgba(49, 46, 129, 0.8), 
-      rgba(88, 28, 135, 0.8), 
-      rgba(157, 23, 77, 0.8))`,
+      rgba(15, 23, 57, 0.8), 
+      rgba(76, 61, 252, 0.8), 
+      rgba(255, 154, 80, 0.8))`,
     transition: 'background-image 0.5s ease',
   };
 
