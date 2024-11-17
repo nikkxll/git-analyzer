@@ -33,6 +33,8 @@ export const REVIEW_TEMPLATES: Record<FeedbackSize, string> = {
     - Strengths, 3 key points shortly
     - Found issues, 3 main concerns shortly
 
+    Try to be more specific and provide examples from the code
+
     Amount of text: from 200 to 500 characters at most
   `,
   detailed: `
@@ -58,6 +60,8 @@ export const REVIEW_TEMPLATES: Record<FeedbackSize, string> = {
     Key Strengths: 4-5 key points
     Areas for Improvement: 4-5 main concerns
     Code Structure Analysis: possible points of improvement
+
+    Try to be more specific and provide examples from the code
 
     Amount of text: from 1000 to 2000 characters at most
   `,
@@ -102,6 +106,8 @@ export const REVIEW_TEMPLATES: Record<FeedbackSize, string> = {
     - Long-term Improvements
     - Refactoring Suggestions
 
+    Try to be more specific and provide examples from the code
+
     Amount of text: from 5000 to 10000 characters at most
   `,
 };
@@ -134,6 +140,8 @@ export const COMMIT_TEMPLATES: Record<FeedbackSize, string> = {
     - Main Impact Points
     - Possible issues
 
+    Try to be more specific and provide examples from commit
+
     Amount of text: from 200 to 500 characters at most
     `,
 
@@ -164,6 +172,8 @@ export const COMMIT_TEMPLATES: Record<FeedbackSize, string> = {
     - Impact Analysis
     - Best Practices Review
     - Suggestions
+
+    Try to be more specific and provide examples from commit
 
     Amount of text: from 1000 to 2000 characters at most
     `,
@@ -197,6 +207,8 @@ export const COMMIT_TEMPLATES: Record<FeedbackSize, string> = {
     - Impact Analysis
     - Security Review
     - Recommendations and suggestions
+
+    Try to be more specific and provide examples from commit
 
     Amount of text: from 5000 to 10000 characters at most
     `,

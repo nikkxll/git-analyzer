@@ -31,6 +31,7 @@ describe("CodeAnalysisService", () => {
   });
 
   describe("analyzeFile", () => {
+    // Test basic file analysis functionality
     it("should format and return the response correctly", async () => {
       const result = await service.analyzeFile(
         "console.log('test')",
@@ -43,6 +44,7 @@ describe("CodeAnalysisService", () => {
       });
     });
 
+    // Test progress reporting during file analysis
     it("should call onProgress with correct progress values", async () => {
       const onProgress = jest.fn();
       await service.analyzeFile("const x = 1;", "concise", onProgress);
@@ -53,6 +55,7 @@ describe("CodeAnalysisService", () => {
       expect(onProgress).toHaveBeenNthCalledWith(3, 80);
     });
 
+    // Test error handling for file analysis
     it("should handle API errors gracefully", async () => {
       mockGenerateContent.mockRejectedValueOnce(new Error("API Error"));
 
@@ -76,6 +79,7 @@ describe("CodeAnalysisService", () => {
       ],
     };
 
+    // Test basic commit analysis functionality
     it("should analyze commit content correctly", async () => {
       const result = await service.analyzeCommit(
         mockCommitInfo,
@@ -88,6 +92,7 @@ describe("CodeAnalysisService", () => {
       );
     });
 
+    // Test that all commit information is included in the analysis request
     it("should include all commit details in the analysis template", async () => {
       await service.analyzeCommit(mockCommitInfo, "comprehensive");
 
@@ -100,6 +105,7 @@ describe("CodeAnalysisService", () => {
       expect(templateCall).toContain(mockCommitInfo.changes[0].patch);
     });
 
+    // Test progress reporting during commit analysis
     it("should call onProgress with correct values", async () => {
       const onProgress = jest.fn();
       await service.analyzeCommit(mockCommitInfo, "comprehensive", onProgress);
@@ -110,6 +116,7 @@ describe("CodeAnalysisService", () => {
       expect(onProgress).toHaveBeenNthCalledWith(3, 90);
     });
 
+    // Test error handling for commit analysis
     it("should handle API errors during commit analysis", async () => {
       mockGenerateContent.mockRejectedValueOnce(new Error("API Error"));
 

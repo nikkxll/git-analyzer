@@ -45,8 +45,8 @@ export const FormInput = ({
                 curl https://api.github.com/repos/
                 <span className="text-blue-400">{"{user}"}</span>/
                 <span className="text-blue-400">{"{repo}"}</span>/contents/
-                <span className="text-blue-400">{"{file_name}"}</span>
-                <br /> <br /> Replace user, repo, and file_name with the actual
+                <span className="text-blue-400">{"{file_path}"}</span>
+                <br /> <br /> Replace user, repo, and file_path with the actual
                 values
               </div>
             ) : (

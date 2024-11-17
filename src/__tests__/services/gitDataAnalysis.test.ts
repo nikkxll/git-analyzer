@@ -54,6 +54,13 @@ describe("GitHubService", () => {
       url: "",
     };
 
+    // File analysis tests
+
+    // Verifies that:
+    // 1. GitHub API is called with correct parameters
+    // 2. Retrieved content is properly passed to code analysis
+    // 3. Final result is returned as expected
+
     it("should fetch and analyze file content successfully", async () => {
       mockOctokit.request.mockResolvedValueOnce(mockFileResponse);
 
@@ -86,6 +93,13 @@ describe("GitHubService", () => {
       expect(result).toBe("Mocked analysis result");
     });
 
+    // Tests that the progress callback is called with the correct loading percentages
+    // throughout the file analysis process:
+    // - 5%:  Initial API request
+    // - 10%: After receiving GitHub response
+    // - 20%: Before starting code analysis
+    // - 95%: After analysis completion
+
     it("should call progress callback with correct values", async () => {
       mockOctokit.request.mockResolvedValueOnce(mockFileResponse);
 
@@ -102,6 +116,11 @@ describe("GitHubService", () => {
       expect(mockParams.onProgress).toHaveBeenCalledWith(20);
       expect(mockParams.onProgress).toHaveBeenCalledWith(95);
     });
+
+    // Tests error handling when GitHub API request fails
+    // Verifies that the service:
+    // 1. Properly catches API errors
+    // 2. Maintains expected error handling behavior
 
     it("should throw error when file fetch fails", async () => {
       mockOctokit.request.mockRejectedValueOnce(new Error("API Error"));
@@ -152,6 +171,13 @@ describe("GitHubService", () => {
       url: "",
     };
 
+    // Commit analysis tests
+
+    // Verifies that:
+    // 1. GitHub API is called with correct parameters
+    // 2. Retrieved content is properly passed to code analysis
+    // 3. Final result is returned as expected
+
     it("should fetch and analyze commit details successfully", async () => {
       mockOctokit.request.mockResolvedValueOnce(mockCommitResponse);
 
@@ -197,6 +223,13 @@ describe("GitHubService", () => {
       expect(result).toBe("Mocked commit analysis");
     });
 
+    // Tests that the progress callback is called with the correct loading percentages
+    // throughout the file analysis process:
+    // - 5%:  Initial API request
+    // - 10%: After receiving GitHub response
+    // - 20%: Before starting code analysis
+    // - 95%: After analysis completion
+
     it("should call progress callback with correct values", async () => {
       mockOctokit.request.mockResolvedValueOnce(mockCommitResponse);
 
@@ -214,6 +247,11 @@ describe("GitHubService", () => {
       expect(mockParams.onProgress).toHaveBeenCalledWith(95);
     });
 
+    // Tests error handling when GitHub API request fails
+    // Verifies that the service:
+    // 1. Properly catches API errors
+    // 2. Maintains expected error handling behavior
+
     it("should throw error when commit fetch fails", async () => {
       mockOctokit.request.mockRejectedValueOnce(new Error("API Error"));
 
@@ -229,6 +267,12 @@ describe("GitHubService", () => {
         "Error fetching commit details. Make sure it is accessible",
       );
     });
+
+    // Tests edge case handling when GitHub API response is missing the files array
+    // Verifies that the service:
+    // 1. Handles incomplete API responses gracefully
+    // 2. Provides empty changes array as fallback
+    // 3. Continues analysis with available data
 
     it("should handle missing files array in response", async () => {
       const responseWithoutFiles = {

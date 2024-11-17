@@ -4,6 +4,8 @@ import { HelpCircle } from "lucide-react";
 import { FormInput } from "@/components/FormInput";
 
 describe("FormInput", () => {
+  // Test 1: Verifies basic rendering of the component's visual elements
+
   it("Renders the label and icon correctly", () => {
     const { getByText, getByTestId } = render(
       <FormInput
@@ -18,6 +20,8 @@ describe("FormInput", () => {
     expect(getByText("Test Label")).toBeInTheDocument();
     expect(getByTestId("icon")).toBeInTheDocument();
   });
+
+  // Test 2: Verifies the input's change event handling
 
   it("Calls the onChange function when the input value changes", () => {
     const mockOnChange = jest.fn();
@@ -36,6 +40,8 @@ describe("FormInput", () => {
 
     expect(mockOnChange).toHaveBeenCalled();
   });
+
+  // Test 3: Verifies dropdown functionality when provided
 
   it("Dropdown menu renders correctly", () => {
     const options = [
