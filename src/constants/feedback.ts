@@ -1,4 +1,4 @@
-import { FeedbackSize, AnalysisType } from "@/types";
+import { FeedbackSize, AnalysisType } from "../types";
 
 export const FEEDBACK_OPTIONS = [
   { value: "concise", label: "Quick Review" },

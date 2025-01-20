@@ -4,7 +4,7 @@ import {
   REVIEW_TEMPLATES,
   COMMIT_TEMPLATES,
   TOKEN_LIMITS,
-} from "@/constants/feedback";
+} from "../constants/feedback";
 
 /**
  * Service for analyzing code and commits using Google's Generative AI.

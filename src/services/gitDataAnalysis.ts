@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/core";
 import { CodeAnalysisService } from "./llm";
-import { FeedbackSize, CommitInfo, GitHubFile } from "@/types";
+import { FeedbackSize, CommitInfo, GitHubFile } from "../types";
 
 /**
  * Service for interacting with GitHub API and analyzing repository content.
