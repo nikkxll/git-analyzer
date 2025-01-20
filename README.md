@@ -36,8 +36,4 @@ GEMINI_API_KEY=your_generated_gemini_api_key
 
 Link to the web page:
 
-https://git-quality-checker.onrender.com/
-
-_Note: Initial loading may take 2-3 minutes. Refresh the page if necessary._
-
-You may experience delays or failures when analyzing files/commits individually due to API rate limits or processing time. If this occurs, please try again after 20-30 seconds or reload the page.
+https://git-analyzer-it.vercel.app
