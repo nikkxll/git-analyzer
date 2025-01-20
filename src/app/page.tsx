@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AlertCircle, Github, Code2, Copy, Check } from "lucide-react";
-import { BackgroundAnimation } from "@/components/BackgroundAnimation";
+import { BackgroundAnimation } from "../components/BackgroundAnimation";
 import { FormInput } from "@/components/FormInput";
 import { GitHubService } from "@/services/gitDataAnalysis";
 import { FeedbackSize, AnalysisType } from "@/types";
