@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { AlertCircle, Github, Code2, Copy, Check } from "lucide-react";
 import { BackgroundAnimation } from "../components/BackgroundAnimation";
-import { FormInput } from "@/components/FormInput";
-import { GitHubService } from "@/services/gitDataAnalysis";
-import { FeedbackSize, AnalysisType } from "@/types";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { FormInput } from "../components/FormInput";
+import { GitHubService } from "../services/gitDataAnalysis";
+import { FeedbackSize, AnalysisType } from "../types";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 import {
   FEEDBACK_OPTIONS,
   DEFAULT_FEEDBACK_SIZE,
   DEFAULT_ANALYSIS_TYPE,
-} from "@/constants/feedback";
+} from "../constants/feedback";
 
 const CodeReviewApp = () => {
   const [repo, setRepo] = useLocalStorage("lastRepo", "");
