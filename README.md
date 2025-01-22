@@ -5,14 +5,8 @@
 Project is about fetching specific information on files and commits from GitHub, and use LLM to check their quality.
 
 Technical stack: 
-- Typescript
-- NextJS
-- TailwindCSS
-- Octokit for GitHub API connections
-- Google AI SDK
-- Jest
-- Prettier, Husky
-- Render
+
+[![Stack](https://skillicons.dev/icons?i=ts,nextjs,tailwind,ai,jest)](https://skillicons.dev)
 
 ## Setup and run locally
 
