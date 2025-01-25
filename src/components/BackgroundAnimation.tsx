@@ -26,7 +26,7 @@ export const BackgroundAnimation = ({
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center"
       style={backgroundStyle}
     >
       <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-gradient-to-r from-indigo-500 to-purple-500" />

@@ -36,6 +36,7 @@ export class CodeAnalysisService {
       model: "gemini-pro",
       generationConfig: {
         maxOutputTokens: tokenLimit,
+        temperature: 0.5,
       },
     });
   }
