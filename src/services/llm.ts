@@ -33,7 +33,7 @@ export class CodeAnalysisService {
 
   private createModel(tokenLimit: number) {
     return this.genAI.getGenerativeModel({
-      model: "gemini-pro",
+      model: "gemini-2.0-flash",
       generationConfig: {
         maxOutputTokens: tokenLimit,
         temperature: 0.5,

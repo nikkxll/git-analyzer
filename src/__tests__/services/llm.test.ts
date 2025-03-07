@@ -39,7 +39,7 @@ describe("CodeAnalysisService", () => {
       );
       expect(result).toBe("Mock response text");
       expect(mockGetGenerativeModel).toHaveBeenCalledWith({
-        model: "gemini-pro",
+        model: "gemini-2.0-flash",
         generationConfig: expect.any(Object),
       });
     });
